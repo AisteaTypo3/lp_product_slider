@@ -357,6 +357,16 @@
         return this.renderImage(slide.posterUrl || slide.fallbackImage || '', ariaLabel);
       }
 
+      const uid = Number(slide.slideUid);
+      const existingNode = this.stageNodes.get(uid);
+      if (existingNode) {
+        const instance = this.modelInstances.get(uid);
+        if (instance && typeof instance.onResume === 'function') {
+          instance.onResume();
+        }
+        return existingNode;
+      }
+
       const wrapper = document.createElement('div');
       wrapper.className = 'aistea-pv__media aistea-pv__media--model';
       const canvas = document.createElement('canvas');
@@ -368,7 +378,6 @@
       wrapper.appendChild(poster);
       wrapper.appendChild(canvas);
 
-      const uid = Number(slide.slideUid);
       if (!this.modelInitialized.has(uid)) {
         this.modelInitialized.add(uid);
         this.initModel(slide, canvas, poster).catch((error) => {

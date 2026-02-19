@@ -140,6 +140,7 @@ return [
         'slide_type' => [
             'exclude' => true,
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.slide_type',
+            'onChange' => 'reload',
             'config' => [
                 'type' => 'select',
                 'renderType' => 'selectSingle',
@@ -163,6 +164,7 @@ return [
         ],
         'media_image' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:image',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.media_image',
             'config' => [
                 'type' => 'file',
@@ -173,6 +175,7 @@ return [
         ],
         'media_video' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:video',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.media_video',
             'config' => [
                 'type' => 'file',
@@ -183,6 +186,7 @@ return [
         ],
         'video_poster' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:video',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.video_poster',
             'config' => [
                 'type' => 'file',
@@ -193,6 +197,7 @@ return [
         ],
         'video_startframe' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:video',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.video_startframe',
             'config' => [
                 'type' => 'file',
@@ -203,6 +208,7 @@ return [
         ],
         'video_endframe' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:video',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.video_endframe',
             'config' => [
                 'type' => 'file',
@@ -213,6 +219,7 @@ return [
         ],
         'model_gltf' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_gltf',
             'config' => [
                 'type' => 'file',
@@ -223,6 +230,7 @@ return [
         ],
         'model_poster' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_poster',
             'config' => [
                 'type' => 'file',
@@ -233,6 +241,7 @@ return [
         ],
         'model_envmap' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_envmap',
             'config' => [
                 'type' => 'file',
@@ -243,6 +252,7 @@ return [
         ],
         'model_autorotate' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_autorotate',
             'config' => [
                 'type' => 'check',
@@ -251,6 +261,7 @@ return [
         ],
         'model_camera_preset' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_camera_preset',
             'config' => [
                 'type' => 'select',
@@ -267,6 +278,7 @@ return [
         ],
         'model_bg_color' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:model3d',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.model_bg_color',
             'config' => [
                 'type' => 'input',
@@ -277,6 +289,7 @@ return [
         ],
         'color_variants' => [
             'exclude' => true,
+            'displayCond' => 'FIELD:slide_type:=:colorGallery',
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tx_aistealpproductslider_slide.color_variants',
             'description' => 'JSON object, e.g. [{"name":"Blue","images":["/fileadmin/a.jpg"]}]',
             'config' => [
