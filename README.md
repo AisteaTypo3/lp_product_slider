@@ -1,6 +1,9 @@
 # aistea/lp_product_slider
 
-TYPO3 v13 LTS extension providing content element `aistea_lp_product_slider`.
+TYPO3 v13 LTS extension providing content elements:
+
+- `aistea_lp_product_slider` (vertical product viewer with image/video/3D/color gallery)
+- `aistea_lp_horizontal_slider` (horizontal story slider with image, image sequence, or one-shot video)
 
 ## Three.js shipping
 

@@ -5,6 +5,8 @@
     <body>
       <trans-unit id="tt_content.CType.aistea_lp_product_slider"><source>LP Product Slider</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_product_slider.description"><source>Landingpage product slider with image, video and optional 3D stage.</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_horizontal_slider"><source>LP Horizontal Story Slider</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_horizontal_slider.description"><source>Horizontal visual slider with image, image sequence or one-shot video slides.</source></trans-unit>
       <trans-unit id="tabs.slides"><source>Slides</source></trans-unit>
       <trans-unit id="tabs.media"><source>Media</source></trans-unit>
 
@@ -17,6 +19,7 @@
       <trans-unit id="tt_content.tx_aistealpproductslider_stage_aspect_ratio"><source>Stage aspect ratio</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_theme"><source>Theme</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_slides"><source>Slides</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_hslides"><source>Story slides</source></trans-unit>
 
       <trans-unit id="layout_mode.default"><source>Default</source></trans-unit>
       <trans-unit id="layout_mode.compact"><source>Compact</source></trans-unit>
@@ -45,11 +48,22 @@
       <trans-unit id="tx_aistealpproductslider_slide.model_camera_preset"><source>3D camera preset</source></trans-unit>
       <trans-unit id="tx_aistealpproductslider_slide.model_bg_color"><source>3D background color</source></trans-unit>
       <trans-unit id="tx_aistealpproductslider_slide.color_variants"><source>Color variants (JSON)</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide"><source>Horizontal story slide</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.title"><source>Internal title</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.headline"><source>Headline (optional)</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.slide_type"><source>Slide type</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.media_image"><source>Image</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.media_sequence"><source>Image sequence (ordered file list)</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.sequence_fps"><source>Sequence FPS</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hslide.media_video"><source>Video (once)</source></trans-unit>
 
       <trans-unit id="slide_type.image"><source>Image</source></trans-unit>
       <trans-unit id="slide_type.video"><source>Video</source></trans-unit>
       <trans-unit id="slide_type.model3d"><source>3D model</source></trans-unit>
       <trans-unit id="slide_type.colorGallery"><source>Color gallery</source></trans-unit>
+      <trans-unit id="hslide_type.image"><source>Image</source></trans-unit>
+      <trans-unit id="hslide_type.sequence"><source>Image sequence</source></trans-unit>
+      <trans-unit id="hslide_type.video"><source>Video (once)</source></trans-unit>
 
       <trans-unit id="camera.front"><source>Front</source></trans-unit>
       <trans-unit id="camera.back"><source>Back</source></trans-unit>

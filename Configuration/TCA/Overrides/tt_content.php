@@ -6,6 +6,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
 (static function (): void {
     $contentType = 'aistea_lp_product_slider';
+    $horizontalContentType = 'aistea_lp_horizontal_slider';
 
     ExtensionManagementUtility::addTcaSelectItem(
         'tt_content',
@@ -14,6 +15,16 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_product_slider',
             'value' => $contentType,
             'icon' => 'aistea-lp-product-slider-ce',
+            'group' => 'common',
+        ]
+    );
+    ExtensionManagementUtility::addTcaSelectItem(
+        'tt_content',
+        'CType',
+        [
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_horizontal_slider',
+            'value' => $horizontalContentType,
+            'icon' => 'aistea-lp-horizontal-slider-ce',
             'group' => 'common',
         ]
     );
@@ -140,6 +151,34 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
                 'minitems' => 0,
             ],
         ],
+        'tx_aistealpproductslider_hslides' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_hslides',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_aistealpproductslider_hslide',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+                'foreign_sortby' => 'sorting',
+                'appearance' => [
+                    'expandSingle' => true,
+                    'useSortable' => true,
+                    'enabledControls' => [
+                        'info' => true,
+                        'new' => true,
+                        'dragdrop' => true,
+                        'sort' => true,
+                        'hide' => true,
+                        'delete' => true,
+                        'localize' => true,
+                    ],
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+                'minitems' => 0,
+            ],
+        ],
     ];
 
     ExtensionManagementUtility::addTCAcolumns('tt_content', $newColumns);
@@ -172,6 +211,31 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'header' => [
                 'config' => [
                     'placeholder' => 'Product Viewer',
+                ],
+            ],
+        ],
+    ];
+
+    $horizontalShowItem = '
+        --palette--;;general,
+        header,
+        --div--;LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tabs.slides,
+        tx_aistealpproductslider_hslides,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --palette--;;hidden,
+        --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+        rowDescription
+    ';
+
+    $GLOBALS['TCA']['tt_content']['types'][$horizontalContentType] = [
+        'showitem' => $horizontalShowItem,
+        'columnsOverrides' => [
+            'header' => [
+                'config' => [
+                    'placeholder' => 'Product Story',
                 ],
             ],
         ],
