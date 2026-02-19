@@ -7,6 +7,8 @@
       <trans-unit id="tt_content.CType.aistea_lp_product_slider.description"><source>Landingpage product slider with image, video and optional 3D stage.</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_horizontal_slider"><source>LP Horizontal Story Slider</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_horizontal_slider.description"><source>Horizontal visual slider with image, image sequence or one-shot video slides.</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_image_sequence"><source>LP Image Sequence</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_image_sequence.description"><source>Image-like content element that plays a sequence of images.</source></trans-unit>
       <trans-unit id="tabs.slides"><source>Slides</source></trans-unit>
       <trans-unit id="tabs.media"><source>Media</source></trans-unit>
 
@@ -20,6 +22,13 @@
       <trans-unit id="tt_content.tx_aistealpproductslider_theme"><source>Theme</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_slides"><source>Slides</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_hslides"><source>Story slides</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_sequence_source"><source>Frame source</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_sequence_collection"><source>File collection</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_sequence_frames"><source>Sequence frames (file list)</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_sequence_fps"><source>Sequence FPS</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_sequence_loop"><source>Loop sequence</source></trans-unit>
+      <trans-unit id="sequence_source.filelist"><source>Manual file list</source></trans-unit>
+      <trans-unit id="sequence_source.collection"><source>TYPO3 file collection</source></trans-unit>
 
       <trans-unit id="layout_mode.default"><source>Default</source></trans-unit>
       <trans-unit id="layout_mode.compact"><source>Compact</source></trans-unit>

@@ -7,6 +7,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 (static function (): void {
     $contentType = 'aistea_lp_product_slider';
     $horizontalContentType = 'aistea_lp_horizontal_slider';
+    $imageSequenceContentType = 'aistea_lp_image_sequence';
 
     ExtensionManagementUtility::addTcaSelectItem(
         'tt_content',
@@ -25,6 +26,16 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_horizontal_slider',
             'value' => $horizontalContentType,
             'icon' => 'aistea-lp-horizontal-slider-ce',
+            'group' => 'common',
+        ]
+    );
+    ExtensionManagementUtility::addTcaSelectItem(
+        'tt_content',
+        'CType',
+        [
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_image_sequence',
+            'value' => $imageSequenceContentType,
+            'icon' => 'aistea-lp-image-sequence-ce',
             'group' => 'common',
         ]
     );
@@ -179,6 +190,67 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
                 'minitems' => 0,
             ],
         ],
+        'tx_aistealpproductslider_sequence_frames' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:tx_aistealpproductslider_sequence_source:=:filelist',
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_sequence_frames',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'jpg,jpeg,png,webp,avif',
+                'maxitems' => 300,
+                'minitems' => 1,
+            ],
+        ],
+        'tx_aistealpproductslider_sequence_source' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_sequence_source',
+            'onChange' => 'reload',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'default' => 'filelist',
+                'items' => [
+                    ['LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:sequence_source.filelist', 'filelist'],
+                    ['LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:sequence_source.collection', 'collection'],
+                ],
+            ],
+        ],
+        'tx_aistealpproductslider_sequence_collection' => [
+            'exclude' => true,
+            'displayCond' => 'FIELD:tx_aistealpproductslider_sequence_source:=:collection',
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_sequence_collection',
+            'config' => [
+                'type' => 'select',
+                'renderType' => 'selectSingle',
+                'items' => [
+                    ['', 0],
+                ],
+                'foreign_table' => 'sys_file_collection',
+                'foreign_table_where' => ' AND {#sys_file_collection}.{#deleted}=0',
+                'default' => 0,
+            ],
+        ],
+        'tx_aistealpproductslider_sequence_fps' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_sequence_fps',
+            'config' => [
+                'type' => 'number',
+                'format' => 'integer',
+                'default' => 12,
+                'range' => [
+                    'lower' => 1,
+                    'upper' => 60,
+                ],
+            ],
+        ],
+        'tx_aistealpproductslider_sequence_loop' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_sequence_loop',
+            'config' => [
+                'type' => 'check',
+                'default' => 0,
+            ],
+        ],
     ];
 
     ExtensionManagementUtility::addTCAcolumns('tt_content', $newColumns);
@@ -236,6 +308,34 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'header' => [
                 'config' => [
                     'placeholder' => 'Product Story',
+                ],
+            ],
+        ],
+    ];
+
+    $imageSequenceShowItem = '
+        --palette--;;general,
+        header,
+        tx_aistealpproductslider_sequence_source,
+        tx_aistealpproductslider_sequence_collection,
+        tx_aistealpproductslider_sequence_frames,
+        tx_aistealpproductslider_sequence_fps,
+        tx_aistealpproductslider_sequence_loop,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --palette--;;hidden,
+        --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+        rowDescription
+    ';
+
+    $GLOBALS['TCA']['tt_content']['types'][$imageSequenceContentType] = [
+        'showitem' => $imageSequenceShowItem,
+        'columnsOverrides' => [
+            'header' => [
+                'config' => [
+                    'placeholder' => 'Image Sequence',
                 ],
             ],
         ],

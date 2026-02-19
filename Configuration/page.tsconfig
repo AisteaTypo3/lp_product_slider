@@ -16,6 +16,14 @@ mod.wizards.newContentElement.wizardItems.common {
         CType = aistea_lp_horizontal_slider
       }
     }
+    aistea_lp_image_sequence {
+      iconIdentifier = aistea-lp-image-sequence-ce
+      title = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_image_sequence
+      description = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_image_sequence.description
+      tt_content_defValues {
+        CType = aistea_lp_image_sequence
+      }
+    }
   }
-  show := addToList(aistea_lp_product_slider,aistea_lp_horizontal_slider)
+  show := addToList(aistea_lp_product_slider,aistea_lp_horizontal_slider,aistea_lp_image_sequence)
 }

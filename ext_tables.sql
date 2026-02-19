@@ -1,6 +1,11 @@
 CREATE TABLE tt_content (
   tx_aistealpproductslider_slides int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_hslides int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_sequence_source varchar(20) DEFAULT 'filelist' NOT NULL,
+  tx_aistealpproductslider_sequence_collection int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_sequence_frames int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_sequence_fps int(11) unsigned DEFAULT '12' NOT NULL,
+  tx_aistealpproductslider_sequence_loop tinyint(1) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_layout_mode varchar(20) DEFAULT 'default' NOT NULL,
   tx_aistealpproductslider_breakpoint_mobile int(11) unsigned DEFAULT '768' NOT NULL,
   tx_aistealpproductslider_reduced_motion_behavior varchar(30) DEFAULT 'static' NOT NULL,
