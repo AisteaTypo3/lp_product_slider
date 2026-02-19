@@ -363,6 +363,15 @@
         const instance = this.modelInstances.get(uid);
         if (instance && typeof instance.onResume === 'function') {
           instance.onResume();
+        } else if (!this.modelInitialized.has(uid)) {
+          const canvas = existingNode.querySelector('.aistea-pv__modelCanvas');
+          const poster = existingNode.querySelector('.aistea-pv__modelPoster');
+          if (canvas instanceof HTMLCanvasElement) {
+            this.initModel(slide, canvas, poster).catch((error) => {
+              this.modelInitialized.delete(uid);
+              this.showModelError(existingNode, error);
+            });
+          }
         }
         return existingNode;
       }
@@ -379,8 +388,8 @@
       wrapper.appendChild(canvas);
 
       if (!this.modelInitialized.has(uid)) {
-        this.modelInitialized.add(uid);
         this.initModel(slide, canvas, poster).catch((error) => {
+          this.modelInitialized.delete(uid);
           canvas.remove();
           this.showModelError(wrapper, error);
         });
@@ -396,9 +405,10 @@
 
     async initModel(slide, canvas, posterNode) {
       if (!slide.modelUrl) {
-        return;
+        throw new Error('No 3D model file configured for this slide');
       }
 
+      const uid = Number(slide.slideUid);
       this.toggleLoader(true);
 
       try {
@@ -477,7 +487,8 @@
           },
         };
 
-        this.modelInstances.set(Number(slide.slideUid), instance);
+        this.modelInitialized.add(uid);
+        this.modelInstances.set(uid, instance);
       } finally {
         this.toggleLoader(false);
       }
