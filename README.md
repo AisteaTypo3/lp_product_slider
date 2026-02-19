@@ -1,0 +1,14 @@
+# aistea/lp_product_slider
+
+TYPO3 v13 LTS extension providing content element `aistea_lp_product_slider`.
+
+## Three.js shipping
+
+3D is optional and initialized only when a `model3d` slide is opened. The extension loads modules from local extension assets:
+
+- `Resources/Public/JavaScript/Vendor/three.module.js`
+- `Resources/Public/JavaScript/Vendor/GLTFLoader.js`
+
+The provided files are placeholders. For production 3D rendering, replace them with the official ESM files from the Three.js project (same filenames).
+
+No external CDN is required.

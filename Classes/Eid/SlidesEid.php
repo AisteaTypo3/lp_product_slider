@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Aistea\LpProductSlider\Eid;
+
+use Aistea\LpProductSlider\Domain\Repository\SlideRepository;
+use Aistea\LpProductSlider\Service\SlideDataService;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Database\ConnectionPool;
+use TYPO3\CMS\Core\Http\JsonResponse;
+use TYPO3\CMS\Core\Resource\ResourceFactory;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
+final class SlidesEid
+{
+    public static function main(ServerRequestInterface $request): ResponseInterface
+    {
+        try {
+            $queryParams = $request->getQueryParams();
+            $ceUid = (int)($queryParams['ce'] ?? 0);
+            if ($ceUid <= 0) {
+                return self::json(['error' => 'Missing or invalid ce parameter'], 400);
+            }
+
+            /** @var ConnectionPool $connectionPool */
+            $connectionPool = GeneralUtility::makeInstance(ConnectionPool::class);
+            /** @var ResourceFactory $resourceFactory */
+            $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
+
+            $languageId = isset($queryParams['L']) ? (int)$queryParams['L'] : 0;
+
+            $slideRepository = new SlideRepository($connectionPool);
+            $slideDataService = new SlideDataService($slideRepository, $resourceFactory, $connectionPool);
+
+            $slides = $slideDataService->getHeavySlides($ceUid, $languageId);
+            return self::json([
+                'ce' => $ceUid,
+                'count' => count($slides),
+                'slides' => $slides,
+                'generatedAt' => gmdate(DATE_ATOM),
+            ]);
+        } catch (\Throwable $exception) {
+            return self::json([
+                'error' => 'Endpoint error',
+                'message' => $exception->getMessage(),
+            ], 500);
+        }
+    }
+
+    private static function json(array $payload, int $statusCode = 200): JsonResponse
+    {
+        return new JsonResponse($payload, $statusCode, [
+            'Cache-Control' => 'public, max-age=3600, s-maxage=3600',
+        ]);
+    }
+}

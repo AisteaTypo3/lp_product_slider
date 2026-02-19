@@ -1,0 +1,13 @@
+mod.wizards.newContentElement.wizardItems.common {
+  elements {
+    aistea_lp_product_slider {
+      iconIdentifier = aistea-lp-product-slider-ce
+      title = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_product_slider
+      description = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_product_slider.description
+      tt_content_defValues {
+        CType = aistea_lp_product_slider
+      }
+    }
+  }
+  show := addToList(aistea_lp_product_slider)
+}
