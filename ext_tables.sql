@@ -1,6 +1,11 @@
 CREATE TABLE tt_content (
   tx_aistealpproductslider_slides int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_hslides int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_fsv_short_video int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_fsv_long_video int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_fsv_kicker varchar(255) DEFAULT '' NOT NULL,
+  tx_aistealpproductslider_fsv_headline varchar(255) DEFAULT '' NOT NULL,
+  tx_aistealpproductslider_fsv_button_label varchar(255) DEFAULT 'Watch full video' NOT NULL,
   tx_aistealpproductslider_sequence_source varchar(20) DEFAULT 'filelist' NOT NULL,
   tx_aistealpproductslider_sequence_collection int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_sequence_frames int(11) unsigned DEFAULT '0' NOT NULL,

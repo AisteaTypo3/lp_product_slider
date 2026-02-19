@@ -9,6 +9,8 @@
       <trans-unit id="tt_content.CType.aistea_lp_horizontal_slider.description"><source>Horizontal visual slider with image, image sequence or one-shot video slides.</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_image_sequence"><source>LP Image Sequence</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_image_sequence.description"><source>Image-like content element that plays a sequence of images.</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_fullscreen_video"><source>LP Fullscreen Video</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_fullscreen_video.description"><source>Fullscreen short MP4 teaser with overlay and popup long Vimeo video.</source></trans-unit>
       <trans-unit id="tabs.slides"><source>Slides</source></trans-unit>
       <trans-unit id="tabs.media"><source>Media</source></trans-unit>
 
@@ -27,6 +29,11 @@
       <trans-unit id="tt_content.tx_aistealpproductslider_sequence_frames"><source>Sequence frames (file list)</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_sequence_fps"><source>Sequence FPS</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_sequence_loop"><source>Loop sequence</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_fsv_short_video"><source>Short video (MP4)</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_fsv_long_video"><source>Long video (Vimeo media asset)</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_fsv_kicker"><source>Overlay kicker</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_fsv_headline"><source>Overlay headline</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_fsv_button_label"><source>Button label</source></trans-unit>
       <trans-unit id="sequence_source.filelist"><source>Manual file list</source></trans-unit>
       <trans-unit id="sequence_source.collection"><source>TYPO3 file collection</source></trans-unit>
 

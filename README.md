@@ -5,6 +5,7 @@ TYPO3 v13 LTS extension providing content elements:
 - `aistea_lp_product_slider` (vertical product viewer with image/video/3D/color gallery)
 - `aistea_lp_horizontal_slider` (horizontal story slider with image, image sequence, or one-shot video)
 - `aistea_lp_image_sequence` (single image-sequence element with manual file list or TYPO3 file collection)
+- `aistea_lp_fullscreen_video` (fullscreen autoplay MP4 teaser with CTA popup for long Vimeo video)
 
 ## Three.js shipping
 

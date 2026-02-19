@@ -15,4 +15,8 @@ return [
         'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         'source' => 'EXT:aistea_lp_product_slider/Resources/Public/Icons/ContentProductSlider.svg',
     ],
+    'aistea-lp-fullscreen-video-ce' => [
+        'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        'source' => 'EXT:aistea_lp_product_slider/Resources/Public/Icons/ContentProductSlider.svg',
+    ],
 ];

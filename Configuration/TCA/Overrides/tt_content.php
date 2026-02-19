@@ -8,6 +8,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
     $contentType = 'aistea_lp_product_slider';
     $horizontalContentType = 'aistea_lp_horizontal_slider';
     $imageSequenceContentType = 'aistea_lp_image_sequence';
+    $fullScreenVideoContentType = 'aistea_lp_fullscreen_video';
 
     ExtensionManagementUtility::addTcaSelectItem(
         'tt_content',
@@ -16,6 +17,16 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_product_slider',
             'value' => $contentType,
             'icon' => 'aistea-lp-product-slider-ce',
+            'group' => 'common',
+        ]
+    );
+    ExtensionManagementUtility::addTcaSelectItem(
+        'tt_content',
+        'CType',
+        [
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_fullscreen_video',
+            'value' => $fullScreenVideoContentType,
+            'icon' => 'aistea-lp-fullscreen-video-ce',
             'group' => 'common',
         ]
     );
@@ -251,6 +262,54 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
                 'default' => 0,
             ],
         ],
+        'tx_aistealpproductslider_fsv_short_video' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_fsv_short_video',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'mp4',
+                'maxitems' => 1,
+                'minitems' => 1,
+            ],
+        ],
+        'tx_aistealpproductslider_fsv_long_video' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_fsv_long_video',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'vimeo',
+                'maxitems' => 1,
+                'minitems' => 0,
+            ],
+        ],
+        'tx_aistealpproductslider_fsv_kicker' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_fsv_kicker',
+            'config' => [
+                'type' => 'input',
+                'size' => 50,
+                'eval' => 'trim',
+            ],
+        ],
+        'tx_aistealpproductslider_fsv_headline' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_fsv_headline',
+            'config' => [
+                'type' => 'input',
+                'size' => 60,
+                'eval' => 'trim',
+            ],
+        ],
+        'tx_aistealpproductslider_fsv_button_label' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_fsv_button_label',
+            'config' => [
+                'type' => 'input',
+                'size' => 40,
+                'eval' => 'trim',
+                'default' => 'Watch full video',
+            ],
+        ],
     ];
 
     ExtensionManagementUtility::addTCAcolumns('tt_content', $newColumns);
@@ -336,6 +395,34 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'header' => [
                 'config' => [
                     'placeholder' => 'Image Sequence',
+                ],
+            ],
+        ],
+    ];
+
+    $fullScreenVideoShowItem = '
+        --palette--;;general,
+        header,
+        tx_aistealpproductslider_fsv_short_video,
+        tx_aistealpproductslider_fsv_long_video,
+        tx_aistealpproductslider_fsv_kicker,
+        tx_aistealpproductslider_fsv_headline,
+        tx_aistealpproductslider_fsv_button_label,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --palette--;;hidden,
+        --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+        rowDescription
+    ';
+
+    $GLOBALS['TCA']['tt_content']['types'][$fullScreenVideoContentType] = [
+        'showitem' => $fullScreenVideoShowItem,
+        'columnsOverrides' => [
+            'header' => [
+                'config' => [
+                    'placeholder' => 'Immersive video block',
                 ],
             ],
         ],
