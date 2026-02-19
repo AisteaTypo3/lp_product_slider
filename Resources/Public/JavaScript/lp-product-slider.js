@@ -10,6 +10,7 @@
       this.loader = root.querySelector('.aistea-pv__loader');
       this.explainer = root.querySelector('.aistea-pv__explainer');
       this.tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+      this.tabList = root.querySelector('.aistea-pv__tablist');
       this.endpoint = root.dataset.endpoint || '';
       this.breakpoint = Number(root.dataset.breakpoint || 768);
       this.reducedMotionBehavior = root.dataset.reducedMotionBehavior || 'static';
@@ -30,6 +31,11 @@
       this.modelInstances = new Map();
       this.modelInitialized = new Set();
       this.stageNodes = new Map();
+      this.loaderVisible = false;
+      this.loaderShownAt = 0;
+      this.loaderHideTimer = null;
+      this.tabAnimationPlayed = false;
+      this.tabSnapTimer = null;
 
       this.prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       this.isMobile = () => window.innerWidth <= this.breakpoint;
@@ -43,13 +49,16 @@
       }
 
       this.root.style.setProperty('--pv-ratio', this.root.dataset.stageAspectRatio || '3/2');
+      this.root.classList.add('is-booting');
       this.bindTabEvents();
+      this.bindMobileTabSnap();
       this.bindStageNavigation();
       this.observeViewport();
     }
 
     bindTabEvents() {
       this.tabs.forEach((tab, index) => {
+        tab.style.setProperty('--pv-tab-index', String(index));
         tab.addEventListener('click', () => this.activateByIndex(index, true));
 
         tab.addEventListener('keydown', (event) => {
@@ -93,6 +102,7 @@
             .then(() => {
               this.slidesLoaded = true;
               this.activateByIndex(0, false);
+              this.animateTabsOnFirstLoad();
             })
             .catch(() => {
               this.stage.classList.add('has-error');
@@ -162,8 +172,74 @@
         entryTab.setAttribute('aria-selected', selected ? 'true' : 'false');
         entryTab.setAttribute('tabindex', selected ? '0' : '-1');
       });
+      this.centerActiveTab(tab);
 
       this.switchToSlide(slideUid);
+    }
+
+    centerActiveTab(tab) {
+      if (!tab || !this.isMobile()) {
+        return;
+      }
+      if (typeof tab.scrollIntoView === 'function') {
+        tab.scrollIntoView({
+          behavior: 'smooth',
+          block: 'nearest',
+          inline: 'center',
+        });
+      }
+    }
+
+    bindMobileTabSnap() {
+      if (!this.tabList) {
+        return;
+      }
+
+      this.tabList.addEventListener('scroll', () => {
+        if (!this.isMobile()) {
+          return;
+        }
+        if (this.tabSnapTimer) {
+          window.clearTimeout(this.tabSnapTimer);
+        }
+        this.tabSnapTimer = window.setTimeout(() => {
+          const index = this.getNearestTabIndexToCenter();
+          if (index < 0) {
+            return;
+          }
+          const tab = this.tabs[index];
+          if (!tab) {
+            return;
+          }
+
+          tab.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center',
+          });
+          this.activateByIndex(index, true);
+        }, 90);
+      }, { passive: true });
+    }
+
+    getNearestTabIndexToCenter() {
+      if (!this.tabList || this.tabs.length === 0) {
+        return -1;
+      }
+      const center = this.tabList.scrollLeft + (this.tabList.clientWidth / 2);
+      let nearestIndex = -1;
+      let nearestDistance = Number.POSITIVE_INFINITY;
+
+      this.tabs.forEach((tab, index) => {
+        const tabCenter = tab.offsetLeft + (tab.offsetWidth / 2);
+        const distance = Math.abs(tabCenter - center);
+        if (distance < nearestDistance) {
+          nearestDistance = distance;
+          nearestIndex = index;
+        }
+      });
+
+      return nearestIndex;
     }
 
     activateRelative(delta) {
@@ -226,11 +302,45 @@
         node = this.renderImage(slide.imageUrl || slide.fallbackImage, ariaLabel);
       }
 
-      this.stage.classList.remove('is-fading');
-      this.stage.innerHTML = '';
-      this.stage.appendChild(node);
-      requestAnimationFrame(() => this.stage.classList.add('is-fading'));
+      Array.from(this.stage.children).forEach((child) => {
+        if (!(child instanceof HTMLElement)) {
+          return;
+        }
+        if (!child.classList.contains('aistea-pv__stageLayer')) {
+          child.remove();
+        }
+      });
+
+      const currentLayer = this.stage.querySelector('.aistea-pv__stageLayer.is-current');
+      if (currentLayer instanceof HTMLElement) {
+        currentLayer.classList.remove('is-current');
+        currentLayer.classList.add('is-leaving');
+        window.setTimeout(() => {
+          if (currentLayer.parentNode === this.stage) {
+            currentLayer.remove();
+          }
+        }, 520);
+      }
+
+      const nextLayer = document.createElement('div');
+      nextLayer.className = 'aistea-pv__stageLayer is-current';
+      nextLayer.appendChild(node);
+      this.stage.appendChild(nextLayer);
+      requestAnimationFrame(() => nextLayer.classList.add('is-visible'));
       this.stageNodes.set(Number(slide.slideUid), node);
+    }
+
+    animateTabsOnFirstLoad() {
+      if (this.tabAnimationPlayed || this.prefersReducedMotion) {
+        this.root.classList.remove('is-booting');
+        return;
+      }
+      this.tabAnimationPlayed = true;
+      requestAnimationFrame(() => {
+        this.root.classList.remove('is-booting');
+        this.root.classList.add('is-ready');
+      });
+      window.setTimeout(() => this.root.classList.remove('is-ready'), 900);
     }
 
     renderImage(url, ariaLabel) {
@@ -267,7 +377,9 @@
       video.muted = true;
       video.playsInline = true;
       video.preload = 'none';
-      video.controls = true;
+      video.controls = false;
+      video.setAttribute('controlsList', 'nodownload nofullscreen noplaybackrate');
+      video.disablePictureInPicture = true;
       video.setAttribute('aria-label', ariaLabel || slide.title || 'Product video');
 
       const poster = slide.startframeUrl || slide.posterUrl || slide.fallbackImage || '';
@@ -869,11 +981,42 @@
       if (!this.loader) {
         return;
       }
-      this.loader.hidden = !visible;
-      this.loader.setAttribute('aria-hidden', visible ? 'false' : 'true');
-      if (this.stage) {
-        this.stage.classList.toggle('is-loading', visible);
+
+      if (visible) {
+        if (this.loaderHideTimer) {
+          window.clearTimeout(this.loaderHideTimer);
+          this.loaderHideTimer = null;
+        }
+        if (!this.loaderVisible) {
+          this.loaderVisible = true;
+          this.loaderShownAt = Date.now();
+          this.loader.hidden = false;
+          this.loader.setAttribute('aria-hidden', 'false');
+          if (this.stage) {
+            this.stage.classList.add('is-loading');
+          }
+        }
+        return;
       }
+
+      if (!this.loaderVisible) {
+        return;
+      }
+
+      const elapsed = Date.now() - this.loaderShownAt;
+      const delay = Math.max(0, 3000 - elapsed);
+      if (this.loaderHideTimer) {
+        window.clearTimeout(this.loaderHideTimer);
+      }
+      this.loaderHideTimer = window.setTimeout(() => {
+        this.loaderVisible = false;
+        this.loaderHideTimer = null;
+        this.loader.hidden = true;
+        this.loader.setAttribute('aria-hidden', 'true');
+        if (this.stage) {
+          this.stage.classList.remove('is-loading');
+        }
+      }, delay);
     }
 
     setLoaderText(text) {

@@ -89,7 +89,7 @@
   border-radius: 999px;
   padding: 0.82rem 1.35rem 0.82rem 2.95rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease, transform 0.24s ease;
 }
 
 .aistea-pv__tab::before,
@@ -126,6 +126,7 @@
   border-color: rgba(255, 255, 255, 0.22);
   background: linear-gradient(180deg, #252831, #1b1e24);
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+  transform: translateX(3px);
 }
 
 .aistea-pv__tab.is-active::before {
@@ -174,16 +175,34 @@
 }
 
 .aistea-pv__stageMedia {
+  position: relative;
   aspect-ratio: var(--pv-ratio);
   width: 100%;
+  overflow: hidden;
+}
+
+.aistea-pv__stageLayer {
+  position: absolute;
+  inset: 0;
   display: grid;
   place-items: center;
   opacity: 0;
-  transition: opacity 0.35s ease;
+  transform: translate3d(0, 14px, 0) scale(0.992);
+  filter: blur(4px);
+  transition: opacity 0.42s ease, transform 0.42s ease, filter 0.42s ease;
 }
 
-.aistea-pv__stageMedia.is-fading {
+.aistea-pv__stageLayer.is-visible {
   opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  filter: blur(0);
+}
+
+.aistea-pv__stageLayer.is-leaving {
+  opacity: 0;
+  transform: translate3d(0, -16px, 0) scale(1.006);
+  filter: blur(6px);
+  pointer-events: none;
 }
 
 .aistea-pv__media,
@@ -273,6 +292,24 @@
   padding: 0.7rem 1.05rem;
   font-size: 0.95rem;
   z-index: 4;
+  opacity: 0;
+  transform: translate(-50%, -50%) translateY(6px);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+}
+
+.aistea-pv__stageMedia.is-loading + .aistea-pv__loader {
+  opacity: 1;
+  transform: translate(-50%, -50%) translateY(0);
+}
+
+.aistea-pv.is-booting .aistea-pv__tab {
+  opacity: 0;
+  transform: translate3d(-14px, 0, 0) scale(0.985);
+}
+
+.aistea-pv.is-ready .aistea-pv__tab {
+  animation: aistea-pv-tab-in 0.55s cubic-bezier(0.19, 1, 0.22, 1) both;
+  animation-delay: calc(var(--pv-tab-index, 0) * 70ms);
 }
 
 .aistea-pv__loaderDot {
@@ -370,24 +407,79 @@
 
   .aistea-pv__controlsInner {
     width: 100%;
-    gap: 0.55rem;
+    display: block;
+    gap: 0;
   }
 
   .aistea-pv__tabNav {
-    padding-top: 0;
+    display: none;
+  }
+
+  .aistea-pv__tablist {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0.65rem;
+    padding: 0 10vw;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 10vw;
+    scroll-behavior: smooth;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    justify-items: normal;
+  }
+
+  .aistea-pv__tablist::-webkit-scrollbar {
+    display: none;
+  }
+
+  .aistea-pv__tabitem {
+    flex: 0 0 80vw;
+    scroll-snap-align: center;
+  }
+
+  .aistea-pv__tab {
+    min-width: 0;
+    width: 100%;
+    max-width: none;
+    transform: none;
+  }
+
+  .aistea-pv__tab:hover,
+  .aistea-pv__tab:focus-visible,
+  .aistea-pv__tab.is-active {
+    transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .aistea-pv__tab,
-  .aistea-pv__stageMedia,
+  .aistea-pv__stageLayer,
   .aistea-pv__modelPoster {
     transition: none;
+  }
+
+  .aistea-pv.is-booting .aistea-pv__tab,
+  .aistea-pv.is-ready .aistea-pv__tab {
+    animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 
 @keyframes aistea-pv-spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes aistea-pv-tab-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-14px, 0, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
   }
 }
