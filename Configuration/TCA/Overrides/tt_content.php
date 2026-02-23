@@ -338,6 +338,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
     $GLOBALS['TCA']['tt_content']['types'][$contentType] = [
         'showitem' => $showItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
         'columnsOverrides' => [
             'header' => [
                 'config' => [
@@ -363,6 +364,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
     $GLOBALS['TCA']['tt_content']['types'][$horizontalContentType] = [
         'showitem' => $horizontalShowItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
         'columnsOverrides' => [
             'header' => [
                 'config' => [
@@ -391,6 +393,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
     $GLOBALS['TCA']['tt_content']['types'][$imageSequenceContentType] = [
         'showitem' => $imageSequenceShowItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
         'columnsOverrides' => [
             'header' => [
                 'config' => [
@@ -419,6 +422,7 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
 
     $GLOBALS['TCA']['tt_content']['types'][$fullScreenVideoContentType] = [
         'showitem' => $fullScreenVideoShowItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
         'columnsOverrides' => [
             'header' => [
                 'config' => [
