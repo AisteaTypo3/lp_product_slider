@@ -9,6 +9,8 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
     $horizontalContentType = 'aistea_lp_horizontal_slider';
     $imageSequenceContentType = 'aistea_lp_image_sequence';
     $fullScreenVideoContentType = 'aistea_lp_fullscreen_video';
+    $beforeAfterContentType = 'aistea_lp_before_after';
+    $hotspotImageContentType = 'aistea_lp_hotspot_image';
 
     ExtensionManagementUtility::addTcaSelectItem(
         'tt_content',
@@ -47,6 +49,26 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_image_sequence',
             'value' => $imageSequenceContentType,
             'icon' => 'aistea-lp-image-sequence-ce',
+            'group' => 'common',
+        ]
+    );
+    ExtensionManagementUtility::addTcaSelectItem(
+        'tt_content',
+        'CType',
+        [
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_before_after',
+            'value' => $beforeAfterContentType,
+            'icon' => 'aistea-lp-before-after-ce',
+            'group' => 'common',
+        ]
+    );
+    ExtensionManagementUtility::addTcaSelectItem(
+        'tt_content',
+        'CType',
+        [
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_hotspot_image',
+            'value' => $hotspotImageContentType,
+            'icon' => 'aistea-lp-hotspot-image-ce',
             'group' => 'common',
         ]
     );
@@ -310,6 +332,99 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
                 'default' => 'Watch full video',
             ],
         ],
+
+        // Before/After Slider
+        'tx_aistealpproductslider_ba_image_before' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_ba_image_before',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'jpg,jpeg,png,webp,avif',
+                'maxitems' => 1,
+                'minitems' => 1,
+            ],
+        ],
+        'tx_aistealpproductslider_ba_image_after' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_ba_image_after',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'jpg,jpeg,png,webp,avif',
+                'maxitems' => 1,
+                'minitems' => 1,
+            ],
+        ],
+        'tx_aistealpproductslider_ba_label_before' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_ba_label_before',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'tx_aistealpproductslider_ba_label_after' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_ba_label_after',
+            'config' => [
+                'type' => 'input',
+                'size' => 30,
+                'eval' => 'trim',
+            ],
+        ],
+        'tx_aistealpproductslider_ba_initial_position' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_ba_initial_position',
+            'config' => [
+                'type' => 'number',
+                'format' => 'integer',
+                'default' => 50,
+                'range' => [
+                    'lower' => 0,
+                    'upper' => 100,
+                ],
+            ],
+        ],
+
+        // Hotspot Image
+        'tx_aistealpproductslider_hi_image' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_hi_image',
+            'config' => [
+                'type' => 'file',
+                'allowed' => 'jpg,jpeg,png,webp,avif',
+                'maxitems' => 1,
+                'minitems' => 1,
+            ],
+        ],
+        'tx_aistealpproductslider_hi_hotspots' => [
+            'exclude' => true,
+            'label' => 'LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.tx_aistealpproductslider_hi_hotspots',
+            'config' => [
+                'type' => 'inline',
+                'foreign_table' => 'tx_aistealpproductslider_hotspot',
+                'foreign_field' => 'parentid',
+                'foreign_table_field' => 'parenttable',
+                'foreign_sortby' => 'sorting',
+                'appearance' => [
+                    'expandSingle' => true,
+                    'useSortable' => true,
+                    'enabledControls' => [
+                        'info' => true,
+                        'new' => true,
+                        'dragdrop' => true,
+                        'sort' => true,
+                        'hide' => true,
+                        'delete' => true,
+                        'localize' => true,
+                    ],
+                ],
+                'behaviour' => [
+                    'allowLanguageSynchronization' => true,
+                ],
+                'minitems' => 0,
+            ],
+        ],
     ];
 
     ExtensionManagementUtility::addTCAcolumns('tt_content', $newColumns);
@@ -427,6 +542,65 @@ use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
             'header' => [
                 'config' => [
                     'placeholder' => 'Immersive video block',
+                ],
+            ],
+        ],
+    ];
+
+    $beforeAfterShowItem = '
+        --palette--;;general,
+        header,
+        tx_aistealpproductslider_ba_image_before,
+        tx_aistealpproductslider_ba_image_after,
+        --palette--;;ba_labels,
+        tx_aistealpproductslider_ba_initial_position,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --palette--;;hidden,
+        --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+        rowDescription
+    ';
+
+    $GLOBALS['TCA']['tt_content']['types'][$beforeAfterContentType] = [
+        'showitem' => $beforeAfterShowItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
+        'columnsOverrides' => [
+            'header' => [
+                'config' => [
+                    'placeholder' => 'Before / After Comparison',
+                ],
+            ],
+        ],
+    ];
+
+    $GLOBALS['TCA']['tt_content']['palettes']['ba_labels'] = [
+        'showitem' => 'tx_aistealpproductslider_ba_label_before, tx_aistealpproductslider_ba_label_after',
+    ];
+
+    $hotspotImageShowItem = '
+        --palette--;;general,
+        header,
+        tx_aistealpproductslider_hi_image,
+        --div--;LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tabs.hotspots,
+        tx_aistealpproductslider_hi_hotspots,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:access,
+        --palette--;;hidden,
+        --palette--;;access,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:categories,
+        categories,
+        --div--;LLL:EXT:core/Resources/Private/Language/Form/locallang_tabs.xlf:notes,
+        rowDescription
+    ';
+
+    $GLOBALS['TCA']['tt_content']['types'][$hotspotImageContentType] = [
+        'showitem' => $hotspotImageShowItem,
+        'previewRenderer' => \Aistea\LpProductSlider\Backend\ContentElementPreviewRenderer::class,
+        'columnsOverrides' => [
+            'header' => [
+                'config' => [
+                    'placeholder' => 'Hotspot Image',
                 ],
             ],
         ],

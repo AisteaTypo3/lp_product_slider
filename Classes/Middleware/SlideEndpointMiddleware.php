@@ -45,7 +45,11 @@ final readonly class SlideEndpointMiddleware implements MiddlewareInterface
             'generatedAt' => gmdate(DATE_ATOM),
         ];
 
-        $etag = '"' . sha1(json_encode($json)) . '"';
+        $encodedJson = json_encode($json);
+        if (!is_string($encodedJson)) {
+            $encodedJson = '{}';
+        }
+        $etag = '"' . sha1($encodedJson) . '"';
         $ifNoneMatch = $request->getHeaderLine('If-None-Match');
         if ($ifNoneMatch !== '' && $ifNoneMatch === $etag) {
             return new JsonResponse(null, 304, [

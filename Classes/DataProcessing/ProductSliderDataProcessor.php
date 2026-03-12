@@ -16,6 +16,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 final class ProductSliderDataProcessor implements DataProcessorInterface
 {
     /**
+     * @param array<string, mixed> $contentObjectConfiguration
      * @param array<string, mixed> $processedData
      * @param array<string, mixed> $processorConfiguration
      * @return array<string, mixed>

@@ -19,6 +19,7 @@ use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 final class ImageSequenceDataProcessor implements DataProcessorInterface
 {
     /**
+     * @param array<string, mixed> $contentObjectConfiguration
      * @param array<string, mixed> $processedData
      * @param array<string, mixed> $processorConfiguration
      * @return array<string, mixed>
@@ -114,8 +115,7 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
         ConnectionPool $connectionPool,
         ResourceFactory $resourceFactory,
         string $collectionSelection
-    ): array
-    {
+    ): array {
         $collectionUid = $this->extractCollectionUid($collectionSelection);
         if ($collectionUid <= 0) {
             return [];
@@ -127,13 +127,17 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
         }
 
         try {
-            $collection = $resourceFactory->getFileCollectionObject($collectionUid);
+            if (!is_callable([$resourceFactory, 'getFileCollectionObject'])) {
+                return [];
+            }
+            /** @var mixed $collection */
+            $collection = call_user_func([$resourceFactory, 'getFileCollectionObject'], $collectionUid);
             if (!$collection instanceof AbstractFileCollection) {
                 return [];
             }
 
             $collection->loadContents();
-            $items = method_exists($collection, 'getItems') ? $collection->getItems() : [];
+            $items = $collection->getItems();
             if ($items instanceof Traversable) {
                 $items = iterator_to_array($items, false);
             } elseif (!is_array($items)) {
@@ -149,7 +153,7 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
             }
 
             if ($files === []) {
-                $fallbackFiles = method_exists($collection, 'getItems') ? $collection->getItems() : [];
+                $fallbackFiles = $collection->getItems();
                 if ($fallbackFiles instanceof Traversable) {
                     foreach ($fallbackFiles as $item) {
                         $file = $this->resolveCollectionItemToFile($item);
@@ -161,7 +165,7 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
             }
             usort(
                 $files,
-                static fn(File $a, File $b): int => strnatcasecmp($a->getName(), $b->getName())
+                static fn (File $a, File $b): int => strnatcasecmp($a->getName(), $b->getName())
             );
 
             $urls = [];
@@ -221,7 +225,7 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
             $files = $this->collectFilesFromFolder($folderObject, $recursive);
             usort(
                 $files,
-                static fn(File $a, File $b): int => strnatcasecmp($a->getName(), $b->getName())
+                static fn (File $a, File $b): int => strnatcasecmp($a->getName(), $b->getName())
             );
 
             $urls = [];
@@ -247,15 +251,13 @@ final class ImageSequenceDataProcessor implements DataProcessorInterface
     private function collectFilesFromFolder(Folder $folder, bool $recursive): array
     {
         $files = [];
-        if (method_exists($folder, 'getFiles')) {
-            foreach ($folder->getFiles() as $file) {
-                if ($file instanceof File) {
-                    $files[] = $file;
-                }
+        foreach ($folder->getFiles() as $file) {
+            if ($file instanceof File) {
+                $files[] = $file;
             }
         }
 
-        if (!$recursive || !method_exists($folder, 'getSubfolders')) {
+        if (!$recursive) {
             return $files;
         }
 

@@ -32,6 +32,22 @@ mod.wizards.newContentElement.wizardItems.common {
         CType = aistea_lp_fullscreen_video
       }
     }
+    aistea_lp_before_after {
+      iconIdentifier = aistea-lp-before-after-ce
+      title = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_before_after
+      description = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_before_after.description
+      tt_content_defValues {
+        CType = aistea_lp_before_after
+      }
+    }
+    aistea_lp_hotspot_image {
+      iconIdentifier = aistea-lp-hotspot-image-ce
+      title = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_hotspot_image
+      description = LLL:EXT:aistea_lp_product_slider/Resources/Private/Language/locallang_db.xlf:tt_content.CType.aistea_lp_hotspot_image.description
+      tt_content_defValues {
+        CType = aistea_lp_hotspot_image
+      }
+    }
   }
-  show := addToList(aistea_lp_product_slider,aistea_lp_horizontal_slider,aistea_lp_image_sequence,aistea_lp_fullscreen_video)
+  show := addToList(aistea_lp_product_slider,aistea_lp_horizontal_slider,aistea_lp_image_sequence,aistea_lp_fullscreen_video,aistea_lp_before_after,aistea_lp_hotspot_image)
 }

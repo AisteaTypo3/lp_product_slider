@@ -15,9 +15,14 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 final class SlidesEid
 {
-    public static function main(ServerRequestInterface $request): ResponseInterface
+    public static function main(?ServerRequestInterface $request = null): ResponseInterface
     {
         try {
+            $request ??= $GLOBALS['TYPO3_REQUEST'] ?? null;
+            if (!$request instanceof ServerRequestInterface) {
+                return self::json(['error' => 'Missing request context'], 500);
+            }
+
             $queryParams = $request->getQueryParams();
             $ceUid = (int)($queryParams['ce'] ?? 0);
             if ($ceUid <= 0) {
@@ -49,6 +54,9 @@ final class SlidesEid
         }
     }
 
+    /**
+     * @param array<string,mixed> $payload
+     */
     private static function json(array $payload, int $statusCode = 200): JsonResponse
     {
         return new JsonResponse($payload, $statusCode, [

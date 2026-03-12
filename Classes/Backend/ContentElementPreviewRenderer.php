@@ -19,6 +19,8 @@ final class ContentElementPreviewRenderer extends StandardContentPreviewRenderer
             'aistea_lp_horizontal_slider' => $this->renderHorizontalSliderPreview($record),
             'aistea_lp_image_sequence' => $this->renderImageSequencePreview($record),
             'aistea_lp_fullscreen_video' => $this->renderFullScreenVideoPreview($record),
+            'aistea_lp_before_after' => $this->renderBeforeAfterPreview($record),
+            'aistea_lp_hotspot_image' => $this->renderHotspotImagePreview($record),
             default => parent::renderPageModulePreviewContent($item),
         };
     }
@@ -103,6 +105,43 @@ final class ContentElementPreviewRenderer extends StandardContentPreviewRenderer
         }
 
         return $this->wrapPreview('Fullscreen teaser video with modal CTA.', $parts);
+    }
+
+    /**
+     * @param array<string, mixed> $record
+     */
+    private function renderBeforeAfterPreview(array $record): string
+    {
+        $parts = [
+            $this->badge('Before', $this->boolLabel((int)($record['tx_aistealpproductslider_ba_image_before'] ?? 0) > 0)),
+            $this->badge('After', $this->boolLabel((int)($record['tx_aistealpproductslider_ba_image_after'] ?? 0) > 0)),
+            $this->badge('Handle', (int)($record['tx_aistealpproductslider_ba_initial_position'] ?? 50) . '%'),
+        ];
+
+        $labelBefore = trim((string)($record['tx_aistealpproductslider_ba_label_before'] ?? ''));
+        $labelAfter  = trim((string)($record['tx_aistealpproductslider_ba_label_after'] ?? ''));
+        if ($labelBefore !== '') {
+            $parts[] = $this->metaBadge('Label B', $labelBefore);
+        }
+        if ($labelAfter !== '') {
+            $parts[] = $this->metaBadge('Label A', $labelAfter);
+        }
+
+        return $this->wrapPreview('Drag-handle image comparison block.', $parts);
+    }
+
+    /**
+     * @param array<string, mixed> $record
+     */
+    private function renderHotspotImagePreview(array $record): string
+    {
+        return $this->wrapPreview(
+            'Image with clickable hotspot markers.',
+            [
+                $this->badge('Image', $this->boolLabel((int)($record['tx_aistealpproductslider_hi_image'] ?? 0) > 0)),
+                $this->badge('Hotspots', (int)($record['tx_aistealpproductslider_hi_hotspots'] ?? 0)),
+            ]
+        );
     }
 
     /**

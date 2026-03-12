@@ -1,4 +1,11 @@
 CREATE TABLE tt_content (
+  tx_aistealpproductslider_ba_image_before int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_ba_image_after int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_ba_label_before varchar(255) DEFAULT '' NOT NULL,
+  tx_aistealpproductslider_ba_label_after varchar(255) DEFAULT '' NOT NULL,
+  tx_aistealpproductslider_ba_initial_position int(11) unsigned DEFAULT '50' NOT NULL,
+  tx_aistealpproductslider_hi_image int(11) unsigned DEFAULT '0' NOT NULL,
+  tx_aistealpproductslider_hi_hotspots int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_slides int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_hslides int(11) unsigned DEFAULT '0' NOT NULL,
   tx_aistealpproductslider_fsv_short_video int(11) unsigned DEFAULT '0' NOT NULL,
@@ -49,6 +56,31 @@ CREATE TABLE tx_aistealpproductslider_slide (
   model_camera_preset varchar(20) DEFAULT 'front' NOT NULL,
   model_bg_color varchar(20) DEFAULT '' NOT NULL,
   color_variants text,
+
+  PRIMARY KEY (uid),
+  KEY parent (parentid, parenttable),
+  KEY language (l10n_parent, sys_language_uid)
+);
+
+CREATE TABLE tx_aistealpproductslider_hotspot (
+  uid int(11) NOT NULL auto_increment,
+  pid int(11) DEFAULT '0' NOT NULL,
+  tstamp int(11) unsigned DEFAULT '0' NOT NULL,
+  crdate int(11) unsigned DEFAULT '0' NOT NULL,
+  deleted tinyint(1) unsigned DEFAULT '0' NOT NULL,
+  hidden tinyint(1) unsigned DEFAULT '0' NOT NULL,
+  sorting int(11) unsigned DEFAULT '0' NOT NULL,
+  parentid int(11) unsigned DEFAULT '0' NOT NULL,
+  parenttable varchar(255) DEFAULT 'tt_content' NOT NULL,
+
+  sys_language_uid int(11) DEFAULT '0' NOT NULL,
+  l10n_parent int(11) unsigned DEFAULT '0' NOT NULL,
+  l10n_diffsource mediumblob,
+
+  title varchar(255) DEFAULT '' NOT NULL,
+  description text,
+  pos_x int(11) unsigned DEFAULT '50' NOT NULL,
+  pos_y int(11) unsigned DEFAULT '50' NOT NULL,
 
   PRIMARY KEY (uid),
   KEY parent (parentid, parenttable),

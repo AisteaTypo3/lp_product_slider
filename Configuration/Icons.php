@@ -19,4 +19,12 @@ return [
         'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
         'source' => 'EXT:aistea_lp_product_slider/Resources/Public/Icons/ContentProductSlider.svg',
     ],
+    'aistea-lp-before-after-ce' => [
+        'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        'source' => 'EXT:aistea_lp_product_slider/Resources/Public/Icons/ContentBeforeAfter.svg',
+    ],
+    'aistea-lp-hotspot-image-ce' => [
+        'provider' => \TYPO3\CMS\Core\Imaging\IconProvider\SvgIconProvider::class,
+        'source' => 'EXT:aistea_lp_product_slider/Resources/Public/Icons/ContentHotspotImage.svg',
+    ],
 ];

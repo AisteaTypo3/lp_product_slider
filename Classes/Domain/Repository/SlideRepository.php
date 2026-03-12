@@ -40,7 +40,7 @@ final readonly class SlideRepository
             ->fetchAllAssociative();
 
         if ($languageId <= 0) {
-            return array_values(array_filter($rows, static fn(array $row): bool => (int)$row['sys_language_uid'] <= 0));
+            return array_values(array_filter($rows, static fn (array $row): bool => (int)$row['sys_language_uid'] <= 0));
         }
 
         return $this->overlayRows($rows, $languageId);
@@ -84,7 +84,7 @@ final readonly class SlideRepository
 
         usort(
             $result,
-            static fn(array $a, array $b): int => ((int)$a['sorting']) <=> ((int)$b['sorting'])
+            static fn (array $a, array $b): int => ((int)$a['sorting']) <=> ((int)$b['sorting'])
         );
 
         return $result;

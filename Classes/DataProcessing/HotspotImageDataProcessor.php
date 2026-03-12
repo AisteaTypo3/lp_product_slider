@@ -11,7 +11,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
 use TYPO3\CMS\Frontend\ContentObject\DataProcessorInterface;
 
-final class FullScreenVideoDataProcessor implements DataProcessorInterface
+final class HotspotImageDataProcessor implements DataProcessorInterface
 {
     /**
      * @param array<string, mixed> $contentObjectConfiguration
@@ -33,38 +33,21 @@ final class FullScreenVideoDataProcessor implements DataProcessorInterface
         /** @var ResourceFactory $resourceFactory */
         $resourceFactory = GeneralUtility::makeInstance(ResourceFactory::class);
 
-        $shortVideoUrl = $this->getShortVideoUrl($connectionPool, $resourceFactory, $contentUid);
-        $vimeoRaw = $this->getLongVideoUrl($connectionPool, $resourceFactory, $contentUid);
-        $vimeoEmbedUrl = $this->toVimeoEmbedUrl($vimeoRaw);
+        $hotspots = $this->getHotspots($connectionPool, $contentUid);
 
-        $fsv = [
-            'shortVideoUrl' => $shortVideoUrl,
-            'vimeoEmbedUrl' => $vimeoEmbedUrl,
-            'kicker' => trim((string)($data['tx_aistealpproductslider_fsv_kicker'] ?? '')),
-            'headline' => trim((string)($data['tx_aistealpproductslider_fsv_headline'] ?? '')),
-            'buttonLabel' => trim((string)($data['tx_aistealpproductslider_fsv_button_label'] ?? '')) ?: 'Watch full video',
+        $processedData['hi'] = [
+            'imageUrl'     => $this->getImageUrl($connectionPool, $resourceFactory, $contentUid),
+            'hotspots'     => $hotspots,
+            'hotspotsJson' => json_encode($hotspots, JSON_THROW_ON_ERROR | JSON_HEX_TAG),
         ];
-
-        $processedData['fsv'] = $fsv;
 
         return $processedData;
     }
 
-    private function getShortVideoUrl(ConnectionPool $connectionPool, ResourceFactory $resourceFactory, int $contentUid): string
-    {
-        return $this->getFileUrlByField($connectionPool, $resourceFactory, $contentUid, 'tx_aistealpproductslider_fsv_short_video');
-    }
-
-    private function getLongVideoUrl(ConnectionPool $connectionPool, ResourceFactory $resourceFactory, int $contentUid): string
-    {
-        return $this->getFileUrlByField($connectionPool, $resourceFactory, $contentUid, 'tx_aistealpproductslider_fsv_long_video');
-    }
-
-    private function getFileUrlByField(
+    private function getImageUrl(
         ConnectionPool $connectionPool,
         ResourceFactory $resourceFactory,
-        int $contentUid,
-        string $fieldName
+        int $contentUid
     ): string {
         if ($contentUid <= 0) {
             return '';
@@ -76,7 +59,7 @@ final class FullScreenVideoDataProcessor implements DataProcessorInterface
             ->from('sys_file_reference')
             ->where(
                 $queryBuilder->expr()->eq('tablenames', $queryBuilder->createNamedParameter('tt_content')),
-                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter($fieldName)),
+                $queryBuilder->expr()->eq('fieldname', $queryBuilder->createNamedParameter('tx_aistealpproductslider_hi_image')),
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($contentUid, ParameterType::INTEGER)),
                 $queryBuilder->expr()->eq('deleted', 0)
             )
@@ -97,20 +80,36 @@ final class FullScreenVideoDataProcessor implements DataProcessorInterface
         }
     }
 
-    private function toVimeoEmbedUrl(string $input): string
+    /**
+     * @return list<array{uid: int, title: string, description: string, x: int, y: int}>
+     */
+    private function getHotspots(ConnectionPool $connectionPool, int $contentUid): array
     {
-        if ($input === '') {
-            return '';
+        if ($contentUid <= 0) {
+            return [];
         }
 
-        if (preg_match('/(?:vimeo\\.com\\/)(?:video\\/)?(\\d+)/', $input, $matches) === 1) {
-            $id = trim((string)$matches[1]);
-            if ($id !== '') {
-                return 'https://player.vimeo.com/video/' . rawurlencode($id) . '?autoplay=1&title=0&byline=0&portrait=0';
-            }
-        }
+        $queryBuilder = $connectionPool->getQueryBuilderForTable('tx_aistealpproductslider_hotspot');
+        $rows = $queryBuilder
+            ->select('uid', 'title', 'description', 'pos_x', 'pos_y')
+            ->from('tx_aistealpproductslider_hotspot')
+            ->where(
+                $queryBuilder->expr()->eq('parentid', $queryBuilder->createNamedParameter($contentUid, ParameterType::INTEGER)),
+                $queryBuilder->expr()->eq('parenttable', $queryBuilder->createNamedParameter('tt_content')),
+                $queryBuilder->expr()->eq('deleted', 0),
+                $queryBuilder->expr()->eq('hidden', 0)
+            )
+            ->orderBy('sorting', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
 
-        return '';
+        return array_values(array_map(static fn (array $row): array => [
+            'uid'         => (int)$row['uid'],
+            'title'       => (string)($row['title'] ?? ''),
+            'description' => (string)($row['description'] ?? ''),
+            'x'           => max(0, min(100, (int)$row['pos_x'])),
+            'y'           => max(0, min(100, (int)$row['pos_y'])),
+        ], $rows));
     }
 
     private function normalizePublicUrl(string $url): string
@@ -119,15 +118,12 @@ final class FullScreenVideoDataProcessor implements DataProcessorInterface
         if ($url === '') {
             return '';
         }
-
         if (str_starts_with($url, 'http://') || str_starts_with($url, 'https://') || str_starts_with($url, '//')) {
             return $url;
         }
-
         if (!str_starts_with($url, '/')) {
             return '/' . ltrim($url, '/');
         }
-
         return $url;
     }
 }

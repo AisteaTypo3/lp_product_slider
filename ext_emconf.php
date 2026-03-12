@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['lp_product_slider'] = [
     'title' => 'LP Product Slider',
     'description' => 'Landing page product slider / product viewer content element',
     'category' => 'plugin',

@@ -11,8 +11,13 @@
       <trans-unit id="tt_content.CType.aistea_lp_image_sequence.description"><source>Image-like content element that plays a sequence of images.</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_fullscreen_video"><source>LP Fullscreen Video</source></trans-unit>
       <trans-unit id="tt_content.CType.aistea_lp_fullscreen_video.description"><source>Fullscreen short MP4 teaser with overlay and popup long Vimeo video.</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_before_after"><source>LP Before / After Slider</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_before_after.description"><source>Drag-handle image comparison with before and after states.</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_hotspot_image"><source>LP Hotspot Image</source></trans-unit>
+      <trans-unit id="tt_content.CType.aistea_lp_hotspot_image.description"><source>Image with clickable hotspot markers that reveal info panels.</source></trans-unit>
       <trans-unit id="tabs.slides"><source>Slides</source></trans-unit>
       <trans-unit id="tabs.media"><source>Media</source></trans-unit>
+      <trans-unit id="tabs.hotspots"><source>Hotspots</source></trans-unit>
 
       <trans-unit id="tt_content.tx_aistealpproductslider_layout_mode"><source>Layout mode</source></trans-unit>
       <trans-unit id="tt_content.tx_aistealpproductslider_breakpoint_mobile"><source>Mobile breakpoint (px)</source></trans-unit>
@@ -46,6 +51,21 @@
       <trans-unit id="preload.aggressive"><source>Aggressive</source></trans-unit>
       <trans-unit id="theme.dark"><source>Dark</source></trans-unit>
       <trans-unit id="theme.light"><source>Light</source></trans-unit>
+
+      <trans-unit id="tt_content.tx_aistealpproductslider_ba_image_before"><source>Before image</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_ba_image_after"><source>After image</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_ba_label_before"><source>Before label</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_ba_label_after"><source>After label</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_ba_initial_position"><source>Initial handle position (0–100)</source></trans-unit>
+
+      <trans-unit id="tt_content.tx_aistealpproductslider_hi_image"><source>Background image</source></trans-unit>
+      <trans-unit id="tt_content.tx_aistealpproductslider_hi_hotspots"><source>Hotspots</source></trans-unit>
+
+      <trans-unit id="tx_aistealpproductslider_hotspot"><source>Hotspot</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hotspot.title"><source>Title</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hotspot.description"><source>Description</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hotspot.pos_x"><source>Position X (%)</source></trans-unit>
+      <trans-unit id="tx_aistealpproductslider_hotspot.pos_y"><source>Position Y (%)</source></trans-unit>
 
       <trans-unit id="tx_aistealpproductslider_slide"><source>Product slider slide</source></trans-unit>
       <trans-unit id="tx_aistealpproductslider_slide.title"><source>Title</source></trans-unit>
